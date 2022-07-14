@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <h2 class="mb-4 pt-5">Registration</h2>
+
+    <form method="post">{% csrf_token %}
+        {% for f in form %}
+            <p>
+                <label class="form-label fs-4 fw-semibold" for="{{ f.id_for_label }}">{{ f.label }} :</label>
+                {{ f }}
+            </p>
+            <div class="form-errors">{{ f.errors }}</div>
+        {% endfor %}
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+    </form>
+    <p class="mt-5 pb-3">You have already an account <a href="{% url 'login' %}">Sign in</a></p>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base/base.html' %}
+
+{% block title %}ToDo List{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <h1 class="text-center">Welcome {{ request.user }}</h1>
+    {% endif %}
+    <div class="d-flex justify-content-between">
+        <h4><a class="navbar-brand d-inline-block" href="{% url 'create' %}">Add Task</a></h4>
+        <a class="btn btn-secondary" href="{% url 'logout' %}">Logout</a>
+    </div>
+    {% for task in tasks %}
+        <ul class="list-group mt-3">
+            <li class="list-group-item d-flex justify-content-between list-group-item-secondary">
+                <div>
+                    {% if task.completed %}
+                        <h2>
+                            <i><s>{{ task.title }}</s></i>
+                            <i class="fa-solid fa-circle-check fs-4"></i>
+                        </h2>
+                    {% else %}
+                        <h2>{{ task.title }}</h2>
+                    {% endif %}
+                    {% if task.deadline is not None %}
+                        <p><small>Deadline: {{ task.deadline }}</small></p>
+                    {% endif %}
+                    <p class="fs-4">{{ task.description }}</p>
+                </div>
+
+                <div class="d-flex flex-column justify-content-around">
+                    <a class="btn btn-primary" href="{% url 'update' task.id %}">Update</a>
+                    <a class="btn btn-primary" href="{% url 'delete' task.id %}">Delete</a>
+                </div>
+
+            </li>
+        </ul>
+    {% empty %}
+        <p>You haven't any tasks</p>
+    {% endfor %}
+{% endblock %}
